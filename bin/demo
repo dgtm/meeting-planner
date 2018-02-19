@@ -1,0 +1,47 @@
+#!/usr/bin/env ruby
+require 'json'
+require 'ap'
+require 'prettyprint'
+
+$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+
+
+require "planner"
+room_a = Room.new('Prenzlauer Berg')
+room_b = Room.new('Schonhauser Allee')
+rooms = [ room_a, room_b ]
+
+meetings = [
+  Meeting.new('All Hands meeting', 60),
+  Meeting.new('Marketing presentation', 30),
+  Meeting.new('Product team sync', 30),
+  Meeting.new('Ruby vs Go presentation', 45),
+  Meeting.new('New app design presentation', 45),
+  Meeting.new('Customer support sync', 30),
+  Meeting.new('Front-end coding interview', 60),
+  Meeting.new('Skype Interview A', 30),
+  Meeting.new('Skype Interview B', 30),
+  Meeting.new('Project Bananaphone Kickoff', 45),
+  Meeting.new('Developer talk', 60),
+  Meeting.new('API Architecture planning', 45),
+  Meeting.new('Android app presentation', 45),
+  Meeting.new('Back-end coding interview A', 60),
+  Meeting.new('Back-end coding interview B', 60),
+  Meeting.new('Back-end coding interview C', 60),
+  Meeting.new('Sprint planning', 45),
+  Meeting.new('New marketing campaign presentation', 30)
+]
+
+meetings.each { |m| Scheduler.schedule(rooms, m) }
+
+
+rooms.each do |room|
+  puts "================#{room.name}============="
+  room.scheduled_meetings.each do |s|
+    puts "Meeting: #{s[:meeting].title} \n"
+    puts "Duration: #{s[:meeting].duration / 60} minutes \n"
+    puts "Starts at: #{s[:starts_at].strftime('%H:%M')} \n"
+    puts "Ends At: #{s[:ends_at].strftime('%H:%M')} \n"
+    puts "========================================"
+  end
+end
